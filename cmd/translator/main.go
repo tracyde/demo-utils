@@ -51,8 +51,11 @@ func main() {
 	}
 
 	log.Info("Initiating file tailer: ", path)
+	// specify how often you want the tailer to check for updates
+	pollInterval := time.Duration(500 * time.Millisecond)
 	// TODO: handle invalid InputLogPath, below is supposed to catch it but does not seem to work properly
-	tailer, err := fswatcher.RunFileTailer([]glob.Glob{parsedGlob}, false, true, log.New())
+	// tailer, err := fswatcher.RunFileTailer([]glob.Glob{parsedGlob}, false, true, log.New())
+	tailer, err := fswatcher.RunPollingFileTailer([]glob.Glob{parsedGlob}, false, true, pollInterval, log.New())
 	if err != nil {
 		log.Fatalf("Failed to start file tailer: %v", err)
 	}
